@@ -23,20 +23,20 @@ def read_root():
     return {"Hello": "World"}
 
 @app.post("/upload/voice")
-async def upload_voice(audio_file: UploadFile = File(...)):
-    file_extension = audio_file.filename.split('.')[-1].lower()
+async def upload_voice(voice_file: UploadFile):
+    file_extension = voice_file.filename.split('.')[-1].lower()
     if file_extension not in ["mp3", "wav"]:
         return JSONResponse(
             status_code=400,
             content={"error": "Invalid file format. Only mp3 and wav are allowed."},
         )
 
-    text = transcribe_audio_with_whisper(audio_file)
+    text = transcribe_audio_with_whisper(voice_file)
     analysis = analyze_text(text)
     return {"analysis": analysis}
 
 @app.post("/upload/image")
-async def upload_image(image_file: UploadFile = File(...)):
+async def upload_image(image_file: UploadFile):
     file_extension = image_file.filename.split('.')[-1].lower()
     if file_extension not in ["jpg", "jpeg", "png"]:
         return JSONResponse(

@@ -34,7 +34,9 @@ def analyze_images(image_file):
     try:
         # Save the uploaded image temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-            temp_file.write(image_file.getbuffer())
+            file_bytes = image_file.file.read()  # synchronous read
+            temp_file.write(file_bytes)
+            temp_file_path = temp_file.name
 
         # Static extracted text for this specific image
         extracted_text = (
