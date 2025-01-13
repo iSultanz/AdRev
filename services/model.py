@@ -34,9 +34,8 @@ def analyze_images(image_file):
     try:
         # Save the uploaded image temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-            file_bytes = image_file.file.read()  # synchronous read
+            file_bytes = image_file.file.read()
             temp_file.write(file_bytes)
-            temp_file_path = temp_file.name
 
         # Static extracted text for this specific image
         extracted_text = (
@@ -48,10 +47,6 @@ def analyze_images(image_file):
             "تقسيط على أربع دفعات\n"
             "1499 ريال سعودي عرض خاص\n"
         )
-
-        # Analyze the extracted text
-        text_analysis = analyze_text(extracted_text)
-
         feature_analysis = (
             "تحليل العناصر البصرية:\n"
             "- اللون الأرجواني المهيمن يعطي شعورًا بالاحترافية والجاذبية.\n"
@@ -60,12 +55,13 @@ def analyze_images(image_file):
             "- تضمين هاتف ذكي يوضح فكرة إنشاء متجر إلكتروني.\n"
             "- العناصر البصرية منظمة بشكل جيد لتسهيل قراءة النصوص."
         )
+        
+        combined_text = extracted_text + "\n" + feature_analysis
+        # Analyze the extracted text
+        text_analysis = analyze_text(combined_text)
 
-        return {
-            "extracted_text": extracted_text,
-            "text_analysis": text_analysis,
-            "feature_analysis": feature_analysis
-        }
+
+        return text_analysis
     except Exception as e:
         return f"حدث خطأ أثناء تحليل الصورة: {e}"
 
